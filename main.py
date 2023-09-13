@@ -23,17 +23,26 @@ axes2.plot(df_life_expec.tail(3),'red')
 
 #SUPLOTS
 fig,ax=plt.subplots()
-ax.plot(df_life_expec.head(5),'b--')
+ax.plot(df_life_expec.head(5),'b*-')
 ax.set_title('Indíce de exp.vida por pais')
 
 #PLOTANDO OS DOIS MAIORES E 2 MENORES
 fig,ax=plt.subplots(nrows=1,ncols=2, figsize=(30,10))
 for axis in ax:
     if axis == ax[0]:  
-        axis.plot(df_life_expec.head(10),'blue')
+        axis.plot(df_life_expec.head(10),'b*-', label='Exp.Vidas')
         axis.set_title('Melhores paises')
+        fig.add_axes([0.19,0.5,0.27,0.3]).plot(df_life_expec.tail(3),'r*-')
+        axis.legend()
+        
     else:
-        axis.plot(df_life_expec.tail(10),'r--')
+        axis.plot(df_life_expec.tail(10),'r*-')
         axis.set_title('Piores Paises')
+        fig.add_axes([0.79,0.53,0.17,0.3]).plot(df_life_expec.head(3),'b*-')
+        
     plt.tight_layout()
+   
+
+#PLOTANDO COM ORIENTAÇÃO A OBJETOS E FOR
+
     
