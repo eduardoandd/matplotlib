@@ -1,48 +1,65 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
-df=pd.read_csv('life expectancy.csv')
-df_filtro=df[['Country Name','Life Expectancy World Bank','Health Expenditure %']].sort_values(by='Life Expectancy World Bank',ascending=False).dropna()
+df = pd.read_csv('pokemon.csv')
 
-df_life_expec=df_filtro.groupby('Country Name')[['Life Expectancy World Bank']].mean().sort_values(by='Life Expectancy World Bank',ascending=False)
-plt.plot(df_life_expec.head(5))
-plt.plot(df_life_expec.head(5),'red')
-plt.xlabel('PAIS')
-plt.ylabel('exp')
+df_legendary=df[df['Legendary']==True].sort_values(ascending=False,by='Attack')
 
-fig = plt.figure()
-axes = fig.add_axes([0.1,0.1,0.8,0.8]) #ESQUERDA #INFERIOR, LARGURA ALTURA
-axes2 = fig.add_axes([0.39,0.5,0.47,0.3]) #ESQUERDA #INFERIOR, LARGURA ALTURA
+y=df_legendary['Attack']
+x=df_legendary['Name']
 
-axes.plot(df_life_expec.head(5),'blue')
-axes.set_title('Gráfico')
-axes.set_xlabel('Pais')
-axes.set_ylabel('exp')
+df_legendary_def=df[df['Legendary']==True].sort_values(ascending=False,by='Defense')
+y_def=df_legendary_def['Defense']
+x_def=df_legendary_def['Name']
 
-axes2.plot(df_life_expec.tail(3),'red')
+plt.plot(x,y)
+plt.plot(color='red')
+plt.xlabel('Ataque')
+plt.ylabel('Nome')
+plt.title(f'Top {len(df_legendary)} Pokemons lendários com mais ataque')
 
-#SUPLOTS
-fig,ax=plt.subplots()
-ax.plot(df_life_expec.head(5),'b*-')
-ax.set_title('Indíce de exp.vida por pais')
+#SUBPLOT
 
-#PLOTANDO OS DOIS MAIORES E 2 MENORES
-fig,ax=plt.subplots(nrows=1,ncols=2, figsize=(30,10))
-for axis in ax:
-    if axis == ax[0]:  
-        axis.plot(df_life_expec.head(10),'b*-', label='Exp.Vidas')
-        axis.set_title('Melhores paises')
-        fig.add_axes([0.19,0.5,0.27,0.3]).plot(df_life_expec.tail(3),'r*-')
-        axis.legend()
-        
-    else:
-        axis.plot(df_life_expec.tail(10),'r*-')
-        axis.set_title('Piores Paises')
-        fig.add_axes([0.79,0.53,0.17,0.3]).plot(df_life_expec.head(3),'b*-')
-        
-    plt.tight_layout()
-   
+plt.subplot(1,2,1)
+plt.plot(x,y, 'r--')
+plt.subplot(2,2,2)
+plt.plot(x,y, 'g--')
 
-#PLOTANDO COM ORIENTAÇÃO A OBJETOS E FOR
+
+
+fig= plt.figure()
+axes=fig.add_axes([0.1,0.1,0.8,0.8]) # esquerda, #inferior, largura, altura
+axes.plot(x,y,'blue')
+
+axes2=fig.add_axes([0.5,0.65,0.3,0.2])
+axes2.plot(x.tail(3),y.tail(3),'red')
+axes2.set_title('- Ataque')
+
+axes3=fig.add_axes([0.5,0.30,0.3,0.2])
+axes3.plot(x_def,y_def,'green')
+axes3.set_title('Defesa')
+
+
+#SUBPLOTS
+
+#PLOTANDO OS 3 MAIORES ATAQUES/DEF E OS 3 PIORES TAMBÉM
+fig,ax=plt.subplots(nrows=2,ncols=2,figsize=(15,5))
+
+ax[0][0].plot(x.head(3),y.head(3),'r-*')
+ax[0][0].set_title('Maiores ataques')
+ax[0][1].plot(x_def.head(3),y_def.head(3),'blue')
+ax[0][1].set_title('Maiores defesas')
+
+ax[1][0].plot(x.tail(3),y.tail(3),'r-*')
+ax[1][0].set_title('Menores ataques')
+ax[1][1].plot(x_def.tail(3),y_def.tail(3),'blue')
+ax[1][1].set_title('Menores defesas')
+
+[axis.tick_params(axis='x',labelsize=14) for axis in ax.flat]
+
+plt.tight_layout()
+
+
 
     
